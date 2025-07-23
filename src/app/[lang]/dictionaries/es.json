@@ -1,0 +1,11 @@
+{
+    "HomePage": {
+        "title": "Bienvenido a la app dime que piensas sobre mi?",
+        "description": "Puedes dejarme un comentario o sugerencia sobre mi persopnalidad, me gustaria saber tu opinion" 
+    },
+    "Form": {
+        "formTitle": "Cuentame que piensas sobre mi",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Escribe tu nombre"
+    }
+}

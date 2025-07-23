@@ -1,0 +1,11 @@
+{
+    "HomePage": {
+        "title": "Welcome to the app, Tell me what you think about me?",
+        "description": "You can leave me a comment or suggestion about my personality, I would like to know your opinion"
+    },
+    "Form": {
+        "formTitle": "Tell me what you think about me",
+        "nameLabel": "Name",
+        "namePlaceholder": "Type your name"
+    }
+}
