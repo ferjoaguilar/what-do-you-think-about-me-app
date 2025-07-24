@@ -1,4 +1,5 @@
 'use client';
+import { CommentData, createComment } from '@/services/supabase.service';
 import {useForm} from 'react-hook-form'
 
 type TextProps = {
@@ -17,10 +18,19 @@ type Inputs = {
 
 export const Form = (TextProps:TextProps) => {
     const {register, handleSubmit ,watch, formState:{errors}} = useForm<Inputs>()
-
+    console.log(watch("name"));
     console.log("ERRORES DE FORM", errors);
+
     const onSubmit = (data:Inputs) => {
-        console.log('Formulario enviado', data);
+        const commentData:CommentData = {
+            name: data.name,
+            lastname: data.lastname,
+            email: data.email,
+            comment: data.comment,
+            gift: data.giftMoney || undefined
+        }
+
+        createComment(commentData)
     }
 
 
@@ -39,10 +49,19 @@ export const Form = (TextProps:TextProps) => {
                     <input 
                         type="text" 
                         id='name'
-                        {...register("name", {required: "El nombre es requerido"} )}
+                        {...register("name", 
+                            {required: "El nombre es requerido", 
+                            minLength:{value: 2, message: "El nombre es muy corto"}, 
+                            maxLength:{value:60, message: "El nombre es muy largo"},
+                            pattern: {value:/^[a-zA-Z0-9\sÜü]*$/i, message: "El nombre solo puede contener letras y números"}}
+                        )}
                         className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                         placeholder={TextProps.namePlaceholder}
                     />
+                    {
+                       errors.name &&
+                       <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p> 
+                    }
                 </div>
 
                 <div>
@@ -52,10 +71,14 @@ export const Form = (TextProps:TextProps) => {
                     <input 
                         type="text" 
                         id='lastname'
-                        {...register('lastname')}
+                        {...register('lastname', {required: "El apelldio es requerido", minLength:{value: 2, message: "El apellido es muy corto"}, maxLength:{value:60, message: "El apellido es muy largo"}})}
                         className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                         placeholder="Escribe tu apellido"
                     />
+                    {
+                        errors.lastname &&
+                        <p className='text-red-500 text-xs mt-1'>{errors.lastname.message}</p>
+                    }
                 </div>
 
                 <div>
@@ -63,12 +86,16 @@ export const Form = (TextProps:TextProps) => {
                         Email
                     </label>
                     <input 
-                        type="email" 
+                        type="text" 
                         id='email'
-                        {...register('email')}
+                        {...register('email', {required: "El email es requerido", pattern: {value:/^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/i, message: "El email no es válido"}})}
                         className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                         placeholder="Escribe tu Email"
                     />
+                    {
+                        errors.email &&
+                        <p className='text-red-500 text-xs mt-1'>{errors.email.message}</p>
+                    }
                 </div>
 
                 <div>
@@ -77,11 +104,15 @@ export const Form = (TextProps:TextProps) => {
                     </label>
                     <textarea 
                         id='comment'
-                        {...register('comment')}
+                        {...register('comment', {required: "El comentario es requerido"})}
                         className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                         placeholder="Escribe tu comentario"
                         rows={4}
                     ></textarea>
+                    {
+                        errors.comment &&
+                        <p className='text-red-500 text-xs mt-1'>{errors.comment.message}</p>
+                    }
                 </div>
 
                 <div>
